@@ -40,8 +40,14 @@ def main():
         return 1
     out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(out_dir, exist_ok=True)
-    with open(os.path.join(out_dir, "entry.txt"), "w", encoding="utf-8", newline="\n") as f:
+    out_path = os.path.join(out_dir, "entry.txt")
+    with open(out_path, "w", encoding="utf-8", newline="\n") as f:
         f.write(ENTRY)
+    with open(out_path, "r", encoding="utf-8", newline="") as f:
+        written = f.read()
+    if written != ENTRY or not 1 <= len(written) <= MAX_CHARS:
+        print("main.py: verification failed after writing entry.txt", file=sys.stderr)
+        return 1
     return 0
 
 
